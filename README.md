@@ -1,6 +1,6 @@
-# spatialDC: Reference-free spatially informed cell-type deconvolution for spatial transcriptomics
+# SpatialDC: Reference-free spatially informed cell-type deconvolution for spatial transcriptomics
 
-<img width="1467" alt="figure_overview" src="https://github.com/user-attachments/assets/placeholder-spatialdc-overview" />
+<img width="1589" height="1013" alt="SpatialDC_jul25" src="https://github.com/user-attachments/assets/88f62515-10cb-43ea-92b4-be16020b3763" />
 
 spatialDC is a spatial transcriptomics deconvolution method that leverages graph-regularized topic models to accurately recover cell-type transcriptional profiles and their proportions at each spatial location. The method incorporates spatial neighborhood information through k-nearest neighbor graphs to improve deconvolution accuracy while maintaining computational efficiency.
 
@@ -115,6 +115,10 @@ print(f"Model trained with {n_topics} topics")
 print(f"Perplexity: {perplexity:.4f}")
 print(f"Number of rare topics: {num_rare}")
 ```
+
+<img width="3000" height="3000" alt="spatialplt_mob" src="https://github.com/user-attachments/assets/4f2e52ce-ee82-42d9-85be-b9f6511baec4" />
+
+<img width="3000" height="3000" alt="heatmap_mob" src="https://github.com/user-attachments/assets/bf28374a-c120-4272-a32d-0e9f912888f6" />
 
 ### Model Selection Across Different Numbers of Topics
 
