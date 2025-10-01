@@ -8,7 +8,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
-from spatialdc.evaluation.evaluation import compute_num_rare
+from spatialcd.evaluation.evaluation import compute_num_rare
 
 logging.basicConfig(
     level=logging.INFO,
@@ -64,23 +64,23 @@ def load_multi_sample(path_to_data, sample_names, sample_size, corpus_file='corp
     ds = {        sample_names[i]: pos.iloc[i * sample_size:(i + 1) * sample_size].copy()        for i in range(len(sample_names))    }
     return feat, ds
 
-def save_spatialdc_results(spatialdc_model, n_topics, n_neighbors, corpus, PATH_TO_MODELS):
+def save_results(model, n_topics, n_neighbors, corpus, PATH_TO_MODELS):
     
     perplexities = []
     num_rares = []
 
-    path_to_model = os.path.join(PATH_TO_MODELS, f'spatialdc_topics={n_topics}_knn={n_neighbors}.pkl')
-    path_to_gamma = os.path.join(PATH_TO_MODELS, f'gamma_spatialdc_topics={n_topics}_knn={n_neighbors}.csv')
-    path_to_beta = os.path.join(PATH_TO_MODELS, f'beta_spatialdc_topics={n_topics}_knn={n_neighbors}.csv')
-    path_to_ppxt = os.path.join(PATH_TO_MODELS, f'ppxt_spatialdc_topics={n_topics}_knn={n_neighbors}.csv')
+    path_to_model = os.path.join(PATH_TO_MODELS, f'model_topics={n_topics}_knn={n_neighbors}.pkl')
+    path_to_gamma = os.path.join(PATH_TO_MODELS, f'gamma_topics={n_topics}_knn={n_neighbors}.csv')
+    path_to_beta = os.path.join(PATH_TO_MODELS, f'beta_topics={n_topics}_knn={n_neighbors}.csv')
+    path_to_ppxt = os.path.join(PATH_TO_MODELS, f'ppxt_topics={n_topics}_knn={n_neighbors}.csv')
 
     # Save the model
     with open(path_to_model, 'wb') as f:
-        pickle.dump(spatialdc_model, f)
+        pickle.dump(model, f)
 
     # Extract the beta matrix (topic-word distributions)
-    if hasattr(spatialdc_model, 'components_'):
-        beta_matrix = spatialdc_model.components_
+    if hasattr(model, 'components_'):
+        beta_matrix = model.components_
     else:
         raise AttributeError("The loaded model does not have 'components_' attribute.")
 
@@ -94,13 +94,13 @@ def save_spatialdc_results(spatialdc_model, n_topics, n_neighbors, corpus, PATH_
     beta_df.to_csv(path_to_beta, index=False)
 
     # Save gamma
-    gamma = spatialdc_model.topic_weights
+    gamma = model.topic_weights
     gamma_df = pd.DataFrame(gamma)
     gamma_df.to_csv(path_to_gamma, index=True)
 
     # Compute metrics
-    perplexity = spatialdc_model.perplexity(corpus)
-    num_rare = compute_num_rare(spatialdc_model, corpus, 0.05)
+    perplexity = model.perplexity(corpus)
+    num_rare = compute_num_rare(model, corpus, 0.05)
 
     perplexities.append(perplexity)
     num_rares.append(num_rare)

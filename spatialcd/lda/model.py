@@ -9,8 +9,8 @@ from scipy.special import digamma
 # from scipy.optimize import linear_sum_assignment
 from tqdm.auto import tqdm
 
-import spatialdc.lda.admm as admm
-from spatialdc.lda.online_lda import LatentDirichletAllocation
+import spatialcd.lda.admm as admm
+from spatialcd.lda.online_lda import LatentDirichletAllocation
 
 
 def _update_alpha(counts, diff_matrix, diff_penalty, sample_id, verbosity=0, max_iter=15,
