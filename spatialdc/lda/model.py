@@ -101,18 +101,13 @@ def train(corpus, graph_matrices, n_topics, nu_penalty=1,
     start_time = time.time()
     xis = None
     for i in range(n_iters):
-        # logging.info(f'>>> Starting iteration {i}')
-        # m_step_start_time = time.time()
         lda = LatentDirichletAllocation(n_components=n_topics, 
                                         random_state=42, learning_method='batch',
-                                        # random_state=42, learning_method='batch', # batch helps perplexity fluctuate less
                                         n_jobs=n_parallel_processes, max_iter=max_lda_iter,
                                         doc_topic_prior=xis
-                                        # ,verbose=1, evaluate_every=1
                                         )
         lda.fit(corpus.values)
         gamma = lda._unnormalized_transform(corpus.values)
-        # m_duration = time.time() - m_step_start_time
         xis = _update_alphas(sample_features=corpus,
                           difference_matrices=graph_matrices,
                           difference_penalty=nu_penalty,
@@ -127,19 +122,10 @@ def train(corpus, graph_matrices, n_topics, nu_penalty=1,
                           admm_rho=admm_rho,
                           primal_tol=primal_tol,
                           threshold=threshold)
-    #     e_duration = time.time() - e_step_start_time
-
-    # last_m_step_start = time.time()
-    columns = ['Topic-%d' % i for i in range(n_topics)]
+        
     lda.topic_weights = pd.DataFrame(lda.fit_transform(corpus.values),
-                                     index=corpus.index,
-                                     columns=columns)
+                                     index=corpus.index)
     return lda
-
-
-def _topic_name(i):
-    return f'Topic-{i}'
-
 
 def infer(components, sample_features, difference_matrices, difference_penalty=1,
           max_primal_dual_iter=400, max_dirichlet_iter=20, max_dirichlet_ls_iter=10,
@@ -149,7 +135,7 @@ def infer(components, sample_features, difference_matrices, difference_penalty=1
     logging.info('>>> Starting inference')
     n_topics = components.shape[0]
     complete_lda = LatentDirichletAllocation(n_components=n_topics,
-                                             random_state=0,
+                                             random_state=42,
                                              n_jobs=n_parallel_processes,
                                              max_iter=2,
                                              doc_topic_prior=None,
@@ -167,12 +153,9 @@ def infer(components, sample_features, difference_matrices, difference_penalty=1
                       n_parallel_processes=n_parallel_processes,
                       verbosity=1)
     complete_lda.doc_topic_prior_ = xis
-    columns = [_topic_name(i) for i in range(n_topics)]
     topic_weights = pd.DataFrame(complete_lda.transform(sample_features.values),
-                                 index=sample_features.index,
-                                 columns=columns)
+                                 index=sample_features.index)
     complete_lda.topic_weights = topic_weights
-    logging.info(f'>>> Inference took {time.time() - start_time} seconds.')
     return complete_lda
 
 

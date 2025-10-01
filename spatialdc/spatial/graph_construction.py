@@ -118,7 +118,7 @@ def knn(df, n_neighbors, name):
 
     return KNN_matrix_df
 
-def knn_graph_single_sample(ds, n_neighbors = 3, sample_name = 'Sample_1'):
+def knn_graph_single_sample(ds, n_neighbors = 3, sample_name = 'single_sample'):
     rescaled_edge_lengths_array = []
     knn_graph_matrix = {}
 
@@ -155,4 +155,43 @@ def knn_graph_single_sample(ds, n_neighbors = 3, sample_name = 'Sample_1'):
     knn_graph_matrix[sample_name] = KNN_matrix
     rescaled_edge_lengths_array.append(rescaled_edge_lengths)
     
+    return knn_graph_matrix
+
+def knn_graph_multi_sample(ds, n_neighbors = 3, sample_names=None):
+    rescaled_edge_lengths_array = []
+    knn_graph_matrix = {}
+    for sample_name in sample_names:
+        knn_mtx = knn(ds[sample_name], n_neighbors, sample_name)
+        
+        # Get coordinates of spots
+        cell_coords = ds[sample_name].values
+        
+        # Rescale coordinates
+        min_coords = np.min(cell_coords, axis=0)
+        max_coords = np.max(cell_coords, axis=0)
+        rescaled_coords = (cell_coords - min_coords) / (max_coords - min_coords)
+        
+        # Initialize lists to store source nodes and destination nodes
+        src_nodes = []
+        dst_nodes = []
+        
+        # Iterate over each row in the DataFrame
+        for _, row in knn_mtx.iterrows():
+            for j, value in enumerate(row):
+                if value == -1:
+                    src_nodes.append(j)
+                elif value == 1:
+                    dst_nodes.append(j)
+        
+        # Compute the differences in coordinates for each pair of points
+        coord_difference = rescaled_coords[src_nodes] - rescaled_coords[dst_nodes]
+        
+        # Compute Euclidean distances from rescaled coordinates
+        rescaled_edge_lengths = np.sqrt(np.sum(coord_difference**2.0, axis=1))
+        
+        # Save KNN_matrix and rescaled_edge_lengths
+        KNN_matrix = csr_matrix(knn_mtx.astype(float))
+        knn_graph_matrix[sample_name] = KNN_matrix
+        rescaled_edge_lengths_array.append(rescaled_edge_lengths)
+        
     return knn_graph_matrix
