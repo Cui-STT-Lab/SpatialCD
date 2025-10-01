@@ -1,6 +1,7 @@
 # SpatialCD: Reference-free spatially informed cell-type deconvolution for spatial transcriptomics
 
-<img width="1589" height="1013" alt="SpatialDC_jul25" src="https://github.com/user-attachments/assets/88f62515-10cb-43ea-92b4-be16020b3763" />
+<img width="1589" height="1005" alt="SpatialCD" src="https://github.com/user-attachments/assets/edd99739-1ca6-4415-b6a1-0d315ca1d813" />
+
 
 SpatialCD is a spatial transcriptomics deconvolution method that leverages graph-regularized topic models to accurately recover cell-type transcriptional profiles and their proportions at each spatial location. The method incorporates spatial neighborhood information through k-nearest neighbor graphs to improve deconvolution accuracy while maintaining computational efficiency.
 
@@ -128,7 +129,8 @@ path_to_perplexity_image = f"{PATH_TO_MODELS}/ppxt.png"
 plt.savefig(output_path)
 plt.show()
 ```
-<img width="1589" height="1013" alt="SpatialDC_jul25" src="https://github.com/user-attachments/assets/88f62515-10cb-43ea-92b4-be16020b3763" />
+<img width="850" height="525" alt="mob_ppxt-2" src="https://github.com/user-attachments/assets/c18f48c9-9dd1-44e8-b8d3-a72310c4f42b" />
+
 
 ## Key Features
 
