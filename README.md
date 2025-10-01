@@ -73,8 +73,70 @@ save_results(spatialcd_model, n_topics, n_neighbors, corpus, PATH_TO_MODELS)
 
 ### Model Selection Across Different Numbers of Topics
 
-For optimal results, test different numbers of topics:
+For optimal results, SpatialCD fits a range of models with K varies from 2 to 20 and compare the perplexities and number of rare cell-types to inform the choice of an optimal K.
 
+```python
+for n_topics in range(2, 21):  
+    print(f"Running model with n_topics = {n_topics}")
+    path_to_model = '_'.join((f'{PATH_TO_MODELS}/',
+                                  f'topics={n_topics}')) + '.pkl'
+    if not os.path.exists(path_to_model):
+        model = train(
+                corpus=corpus,
+                graph_matrices= knn_graph_matrix,
+                nu_penalty= 10,
+                n_topics=n_topics
+                )  
+        with open(path_to_model, 'wb') as f:
+            pickle.dump(model, f)    
+    else:
+        with open(path_to_model, 'rb') as f:
+            model = pickle.load(f)
+    
+    # ---- perplexity
+    perplexity = model.perplexity(corpus)
+    num_rare = compute_num_rare(model, corpus, 0.05)
+    perplexity_records.append({
+        "n_topics": n_topics,
+        "perplexity": perplexity,
+        "num_rare": num_rare
+    })
+    print(f"Perplexity (topics={n_topics}): {perplexity}")
+    print(f"Number of rare cell-types (topics={n_topics}): {num_rare}")
+
+df = pd.DataFrame(perplexity_records)
+path_to_perplexity = f"{PATH_TO_MODELS}/ppxt.csv"
+df.to_csv(path_to_perplexity, index=False)
+print("Perplexity num-rare saved to:", path_to_perplexity)
+
+# Plot Perplexity on the left y-axis: n_topics,perplexity,num_rare
+ax1.plot(df['n_topics'], df['num_rare'], label='NumRare', color='b')
+ax1.set_xlabel(' ')
+ax1.set_ylabel(' ', color='b')
+ax1.tick_params(axis='y', labelcolor='b')
+ax1.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+# Set x-ticks from 1 to 20 with a step of 1
+plt.xticks(range(0, 22, 1))
+
+# Add vertical grid linesf
+ax1.grid(True, axis='x')
+
+# Create a second y-axis to plot NumRare
+ax2 = ax1.twinx()
+ax2.plot(df['n_topics'], df['perplexity'], label='Perplexity', color='r')
+ax2.set_ylabel(' ', color='r')
+ax2.tick_params(axis='y', labelcolor='r')
+
+# Add title and grid
+plt.title(' ')
+fig.tight_layout()
+plt.grid(True)
+
+# Save the plot as an image file
+path_to_perplexity_image = f"{PATH_TO_MODELS}/ppxt.png"
+plt.savefig(output_path)
+plt.show()
+```
 
 ## Key Features
 
