@@ -34,7 +34,7 @@ from spatialcd.lda.model import train
 from spatialcd.spatial.graph_construction import *
 from spatialcd.utils.function import *  
 
-PATH_TO_DATA = '/Users/phuong/Library/CloudStorage/OneDrive-MichiganStateUniversity/Projects/spatialCD/data/'
+PATH_TO_DATA = '../data/'
 sample_name = 'MOB'
 corpus, pos = load_single_sample(PATH_TO_DATA, sample_id=sample_name, corpus_file='mob_corpus.csv', pos_file='mob_pos.csv')
 
@@ -64,6 +64,7 @@ spatialcd_model = train(
 SpatialCD extract deconvolution results and compute evaluation metrics and save to the defined path of output:
 
 ```python
+PATH_TO_MODELS = '../example/output/mob/'
 save_results(spatialcd_model, n_topics, n_neighbors, corpus, PATH_TO_MODELS)
 ```
 
@@ -137,6 +138,7 @@ path_to_perplexity_image = f"{PATH_TO_MODELS}/ppxt.png"
 plt.savefig(output_path)
 plt.show()
 ```
+<img width="1589" height="1013" alt="SpatialDC_jul25" src="https://github.com/user-attachments/assets/88f62515-10cb-43ea-92b4-be16020b3763" />
 
 ## Key Features
 
