@@ -98,7 +98,6 @@ def train(corpus, graph_matrices, n_topics, nu_penalty=1,
           max_lda_iter=100, max_admm_iter=15, n_iters=3, n_parallel_processes=8, verbosity=0,
           primal_dual_mu=2, admm_rho=1.0, primal_tol=1e-3, threshold=None):
     
-    start_time = time.time()
     xis = None
     for i in range(n_iters):
         lda = LatentDirichletAllocation(n_components=n_topics, 
@@ -131,7 +130,6 @@ def infer(components, sample_features, difference_matrices, difference_penalty=1
           max_primal_dual_iter=400, max_dirichlet_iter=20, max_dirichlet_ls_iter=10,
           max_admm_iter=15, n_parallel_processes=1):
     
-    start_time = time.time()
     logging.info('>>> Starting inference')
     n_topics = components.shape[0]
     complete_lda = LatentDirichletAllocation(n_components=n_topics,
