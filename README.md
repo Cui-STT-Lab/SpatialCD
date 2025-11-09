@@ -5,8 +5,6 @@
 
 SpatialCD is a spatial transcriptomics deconvolution method that leverages graph-regularized topic models to accurately recover cell-type compositions and their transcriptional profiles at each spatial location. The method incorporates spatial neighborhood information through k-nearest neighbor graphs to improve deconvolution accuracy while maintaining computational efficiency. 
 
-Reference: Vo, Phuong, and Yuehua Cui. (2025) SpatialCD: Spatially-informed reference-free cell-type deconvolution for spatial transcriptomics. (submitted)
-
 ## Installation
 
 You can install the development version of SpatialCD from GitHub with:
@@ -163,7 +161,7 @@ The spatialCD pipeline generates several output files:
 If you use spatialCD in your research, please cite:
 
 ```
-[Your Citation Here]
+Vo, Phuong, and Yuehua Cui. (2025) SpatialCD: Spatially-informed reference-free cell-type deconvolution for spatial transcriptomics. (submitted)
 ```
 
 ## License
