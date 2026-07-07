@@ -161,7 +161,7 @@ The spatialCD pipeline generates several output files:
 If you use spatialCD in your research, please cite:
 
 ```
-Vo, Phuong, and Yuehua Cui. (2025) Spatially informed reference free cell type deconvolution for spatial transcriptomics with SpatialCD. (submitted)
+Vo, P., & Cui, Y. (2026). Spatially informed reference-free cell-type deconvolution for spatial transcriptomics with SpatialCD. Genome Research, 36(7), 1455.
 ```
 
 ## License
