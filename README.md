@@ -10,7 +10,7 @@ SpatialCD is a spatial transcriptomics deconvolution method that leverages graph
 You can install the development version of SpatialCD from GitHub with:
 
 ```bash
-git clone https://github.com/Cui-STT-Lab/SpatioCD.git
+git clone https://github.com/Cui-STT-Lab/SpatialCD.git
 cd spatialCD
 pip install -e .
 ```
